@@ -1,0 +1,25 @@
+{
+    "name": "general",
+    "query_bit": "",
+    "searched": [
+        {
+            "div_id": "overviewQuickstatsDiv",
+            "rows": [
+                "Categoria Assogestioni",
+                "Var.Ultima Quotazione"
+            ]
+        },
+        {
+            "div_id": "overviewPortfolioTopRegionsDiv",
+            "rows": [
+                "Europa Occidentale - Euro"
+            ]
+        },
+        {
+            "div_id": "overviewPortfolioTopSectorsDiv",
+            "rows": [
+                3
+            ]
+        }
+    ]
+}
