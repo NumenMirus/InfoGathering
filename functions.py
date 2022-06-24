@@ -5,14 +5,14 @@ from termcolor import colored
 
 def getHtmlSource(url, code, query_bit):
 
-    print(colored("[SYSTEM] ", 'green') + "Fetching: {code} - {tab}".format(code = code, tab = query_bit))
+    print(colored("[SYSTEM] ", 'green') + "Fetching: {code} - {t} ".format(code = code.strip(), t = query_bit))
 
     if query_bit:
         response = requests.get(url=url+code+query_bit)
     else:
         response = requests.get(url=url+code)
 
-    print(colored("[SYSTEM]", 'green') + colored("-(STATUS)", 'blue') + " {code}".format(code = response.status_code))
+    print(colored("[SYSTEM]", 'green') + colored("-(STATUS)", 'blue') + " {code} OK".format(code = response.status_code))
 
     return response.text
     
@@ -48,7 +48,6 @@ def extractData(tab, source):
     for s in tab.searched:
         id = s.div_id #set the div id to search
         tb = source.find('div', {"id": id}) #find all dv with id == div_id
-        print("searched: {div}".format(div = id))
         
         if not tb:
             print(colored("[ERROR]", 'red') + " Invalid div_id paramether")
