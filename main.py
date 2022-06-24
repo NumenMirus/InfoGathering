@@ -66,6 +66,7 @@ if __name__ == '__main__':
     root = Tk()
     root.title("Fund Info Gathering App")
     #root.geometry("700x150")
+    root.resizable(width=False, height=False)
 
     filename = filedialog.askopenfile(parent=root, mode='r', title='Choose a file').name
 
