@@ -1,10 +1,15 @@
 import os
 import sys
 from time import sleep
+from tkinter import filedialog
+from tkinter.ttk import Progressbar
 from functions import *
 from models import *
 import colorama
 from openpyxl import Workbook
+from tkinter import *
+
+global filename
 
 def getConfig():
 
@@ -54,21 +59,23 @@ def main(list):
         writeToExcel(fund_data, wb, wb_pin)
         wb_pin += 1
 
-    print("\a")
-    sleep(1)
-    print("\a")
 
-
+    
 
 if __name__ == '__main__':
-    if len(sys.argv) > 2:
-        exit("Too many arguments")
-    elif len(sys.argv) < 2:
-        exit("Too fiew arguments")
-    else:
-        file = sys.argv[1]
-        file = os.path.abspath(file)
-        if os.path.exists(file):
-            main(file)
-        else:
-            exit("There is no such file")
+    root = Tk()
+    root.title("Fund Info Gathering App")
+    #root.geometry("700x150")
+
+    filename = filedialog.askopenfile(parent=root, mode='r', title='Choose a file').name
+
+    lbl1 = Label(root, text=filename)
+    lbl1.pack(side = 'top')
+   
+
+    if filename != None:
+        btn2 = Button(root, text = 'Comincia analisi', command = lambda:main(filename))
+        btn2.pack(side = 'bottom')
+
+
+    root.mainloop()
