@@ -1,6 +1,6 @@
+from typing import final
 import requests
 from bs4 import BeautifulSoup
-from sqlalchemy import column
 from termcolor import colored
 
 def getHtmlSource(url, code, query_bit):
@@ -40,18 +40,19 @@ def extractData(tab, source):
     fund_data = [] # the final dataset
 
     # get fund name
-    # if not tab.query_bit:
-    #     x = source.find(class_='snapshotTitleBox')
-    #     x = x.find('h1')
-    #     fund_data.append(x.text)
+    if not tab.query_bit:
+        x = source.find(class_='snapshotTitleBox')
+        x = x.find('h1')
+        fund_data.append(x.text)
 
     for s in tab.searched:
         id = s.div_id #set the div id to search
         tb = source.find('div', {"id": id}) #find all dv with id == div_id
+        print("searched: {div}".format(div = id))
         
         if not tb:
             print(colored("[ERROR]", 'red') + " Invalid div_id paramether")
-            exit(1)
+            return fund_data
 
         # for every row specified in s.rows, finds the one in the table with the matching
         # header and adds it to the list
@@ -115,7 +116,11 @@ def extractData(tab, source):
 def prepareDataForExcel(fund_data):
     final_data = {}
 
+    final_data['nome'] = fund_data[0][0]
+    del fund_data[0][0]
+
     for tab in fund_data:
+        
         for table in tab:
             for row in table:
                 header = row[0]
@@ -124,13 +129,40 @@ def prepareDataForExcel(fund_data):
                     values.append(value)
                 final_data[header] = values
 
+    
     return final_data
 
 
-def writeToExcel(data, wb):
+def writeToExcel(data, wb, wb_pin):
     sheet = wb.active
+    i = wb_pin
+        
+    sheet.cell(row=i, column=1).value = data["Isin"][0]
+    sheet.cell(row=i, column=2).value = data["nome"]
+    sheet.cell(row=i, column=4).value = data["Alfa"][0]
+    sheet.cell(row=i, column=5).value = data["Indice di Sharpe"][0]
+    sheet.cell(row=i, column=6).value = data["Deviazione Std."][0]
+    sheet.cell(row=i, column=7).value = data["Rendimento Medio"][0]
+    sheet.cell(row=i, column=8).value = data["Beta"][0]
 
-    col_refs = [4,5,6,7,8,10,11,12,13,14,16,17,18,19,20]
+    sheet.cell(row=i, column=10).value = data["YTD"][0]
+    sheet.cell(row=i, column=11).value = data["1-Anno"][0]
+    sheet.cell(row=i, column=12).value = data["3-Anni Ann.ti"][0]
+    sheet.cell(row=i, column=13).value = data["5-Anni Ann.ti"][0]
+    sheet.cell(row=i, column=14).value = "n/a"
+
+    sheet.cell(row=i, column=16).value = data["Entrata (max)"][0]
+    sheet.cell(row=i, column=17).value = data["Uscita (max)"][0]
+    sheet.cell(row=i, column=18).value = data["Switch (max)"][0]
+    sheet.cell(row=i, column=19).value = data["Gestione (max)"][0]
+    sheet.cell(row=i, column=20).value = data["Spese correnti"][0]
+        
+    wb.save("Funds_analysis.xlsx")
+
+
+
+def initWorkbook(wb):
+    sheet = wb.active
 
     sheet.cell(row=4, column=4).value = "Alfa"
     sheet.cell(row=4, column=5).value = "Sharp ratio"
@@ -149,19 +181,7 @@ def writeToExcel(data, wb):
     sheet.cell(row=4, column=18).value = "Switch"
     sheet.cell(row=4, column=19).value = "Gestione"
     sheet.cell(row=4, column=20).value = "Ongoing charge"
-
-    i = 0
-    i_row = 0
-    i_col = 0
-    for row in data:
-        if i == 0:
-            sheet.cell(row=6, column=2).value = data[0]
-            pass
-        
-        print(row)
-        i += 1
-        
-
-
+    sheet.cell(row=4, column=22).value = "Top 2 region"
+    sheet.cell(row=4, column=26).value = "Top 3 sectors"
 
     wb.save("Funds_analysis.xlsx")
