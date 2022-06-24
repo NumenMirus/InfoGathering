@@ -148,7 +148,12 @@ def writeToExcel(data, wb, wb_pin):
     sheet.cell(row=i, column=10).value = data["YTD"][0]
     sheet.cell(row=i, column=11).value = data["1-Anno"][0]
     sheet.cell(row=i, column=12).value = data["3-Anni Ann.ti"][0]
-    sheet.cell(row=i, column=13).value = data["5-Anni Ann.ti"][0]
+    
+    try:
+        sheet.cell(row=i, column=13).value = data["5-Anni Ann.ti"][0]
+    except:
+        sheet.cell(row=i, column=13).value = "n/a"
+
     sheet.cell(row=i, column=14).value = "n/a"
 
     sheet.cell(row=i, column=16).value = data["Entrata (max)"][0]

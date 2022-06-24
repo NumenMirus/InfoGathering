@@ -40,7 +40,6 @@ def main():
             codeList.append(line)
 
     for code in codeList:
-        print(code)
         fund_data = []
 
         for tab in config:
