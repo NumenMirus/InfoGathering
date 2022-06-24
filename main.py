@@ -1,3 +1,6 @@
+import os
+import sys
+from time import sleep
 from functions import *
 from models import *
 import colorama
@@ -20,7 +23,7 @@ def getConfig():
     return [tab1, tab2, tab3, tab5]
 
 
-def main():
+def main(list):
 
     wb = Workbook() # initialize excel workbook
     initWorkbook(wb)
@@ -35,7 +38,7 @@ def main():
     url = "https://www.morningstar.it/it/funds/snapshot/snapshot.aspx?id="
     
     codeList = []
-    with open("list.txt", "r") as file:
+    with open(list, "r") as file:
         for line in file:
             codeList.append(line)
 
@@ -51,7 +54,21 @@ def main():
         writeToExcel(fund_data, wb, wb_pin)
         wb_pin += 1
 
+    print("\a")
+    sleep(1)
+    print("\a")
+
 
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 2:
+        exit("Too many arguments")
+    elif len(sys.argv) < 2:
+        exit("Too fiew arguments")
+    else:
+        file = sys.argv[1]
+        file = os.path.abspath(file)
+        if os.path.exists(file):
+            main(file)
+        else:
+            exit("There is no such file")
