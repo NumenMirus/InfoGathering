@@ -135,6 +135,8 @@ def prepareDataForExcel(fund_data):
 def writeToExcel(data, wb, wb_pin):
     sheet = wb.active
     i = wb_pin
+
+    dict_list = list(data.keys())
         
     sheet.cell(row=i, column=1).value = data["Isin"][0]
     sheet.cell(row=i, column=2).value = data["nome"]
@@ -155,11 +157,18 @@ def writeToExcel(data, wb, wb_pin):
 
     sheet.cell(row=i, column=14).value = "n/a"
 
+
     sheet.cell(row=i, column=16).value = data["Entrata (max)"][0]
     sheet.cell(row=i, column=17).value = data["Uscita (max)"][0]
     sheet.cell(row=i, column=18).value = data["Switch (max)"][0]
     sheet.cell(row=i, column=19).value = data["Gestione (max)"][0]
     sheet.cell(row=i, column=20).value = data["Spese correnti"][0]
+
+    sheet.cell(row=i, column=22).value = dict_list[4] + " | " + data[dict_list[4]][0] + "%"
+    sheet.cell(row=i, column=23).value = dict_list[5] + " | " + data[dict_list[5]][0] + "%"
+    sheet.cell(row=i, column=26).value = dict_list[6] + " | " + data[dict_list[6]][0] + "%"
+    sheet.cell(row=i, column=27).value = dict_list[7] + " | " + data[dict_list[7]][0] + "%"
+    sheet.cell(row=i, column=28).value = dict_list[8] + " | " + data[dict_list[8]][0] + "%"
         
     wb.save("Funds_analysis.xlsx")
 
