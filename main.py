@@ -1,8 +1,4 @@
-import os
-import sys
-from time import sleep
 from tkinter import filedialog
-from tkinter.ttk import Progressbar
 from functions import *
 from models import *
 import colorama

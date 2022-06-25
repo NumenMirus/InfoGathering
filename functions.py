@@ -1,4 +1,3 @@
-from typing import final
 import requests
 from bs4 import BeautifulSoup
 from termcolor import colored
