@@ -1,17 +1,34 @@
 import requests
 from bs4 import BeautifulSoup
 from termcolor import colored
+from models import *
+
+def getConfig():
+
+    searched1 = [MsTable("overviewQuickstatsDiv", ["Categoria Assogestioni", "Var.Ultima Quotazione", "Isin"]), MsTable("overviewPortfolioTopRegionsDiv", [2]), MsTable("overviewPortfolioTopSectorsDiv", [3])]
+    tab1 = MsTab("general", "", searched1)
+
+    searched2 = [MsTable("returnsTrailingDiv", ["YTD", "1-Anno", "3-Anni Ann.ti", "5-Anni Ann.ti"])]
+    tab2 = MsTab("rendimenti", "&tab=1", searched2)
+
+    searched3 = [MsTable("ratingRiskDiv", ["Deviazione Std.", "Rendimento Medio", "", "5-Anni Ann.ti"]), MsTable("ratingRiskRightDiv", ["Indice di Sharpe"]), MsTable("ratingMptStatsDiv", ["Beta", "Alfa"])]
+    tab3 = MsTab("rating e Rischio", "&tab=2", searched3)
+
+    searched5 = [MsTable("managementFeesDiv", ["Entrata (max)", "Uscita (max)", "Switch (max)"]), MsTable("managementFeesAnnualChargesDiv", ["Gestione (max)", "Spese correnti"]), MsTable("managementPurchaseInformationDiv", ["Ingresso"])]
+    tab5 = MsTab("commissioni", "&tab=5", searched5)
+
+    return [tab1, tab2, tab3, tab5]
 
 def getHtmlSource(url, code, query_bit):
 
-    print(colored("[SYSTEM] ", 'green') + "Fetching: {code} - {t} ".format(code = code.strip(), t = query_bit))
+    #print(colored("[SYSTEM] ", 'green') + "Fetching: {code} - {t} ".format(code = code.strip(), t = query_bit))
 
     if query_bit:
         response = requests.get(url=url+code+query_bit)
     else:
         response = requests.get(url=url+code)
 
-    print(colored("[SYSTEM]", 'green') + colored("-(STATUS)", 'blue') + " {code} OK".format(code = response.status_code))
+    #print(colored("[SYSTEM]", 'green') + colored("-(STATUS)", 'blue') + " {code} OK".format(code = response.status_code))
 
     return response.text
     
@@ -19,7 +36,7 @@ def getHtmlSource(url, code, query_bit):
 
 def parseHtmlSource(source):
 
-    print(colored("[SYSTEM]", 'green') +" Parsing page source code")
+    #print(colored("[SYSTEM]", 'green') +" Parsing page source code")
 
     soup = BeautifulSoup(source, 'html.parser')
 
