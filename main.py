@@ -58,7 +58,8 @@ def main(list):
         fund_data = prepareDataForExcel(fund_data)
         writeToExcel(fund_data, wb, wb_pin)
         wb_pin += 1
-
+        
+        print(colored("{id} DONE!", 'yellow').format(id = code.strip()))
 
     
 
