@@ -65,18 +65,24 @@ def main(list):
 if __name__ == '__main__':
     root = Tk()
     root.title("Fund Info Gathering App")
-    #root.geometry("700x150")
+    root.geometry("700x300")
     root.resizable(width=False, height=False)
+    root.columnconfigure(1, weight=1)
+    root.columnconfigure(2, weight=1)
+    root.columnconfigure(3, weight=1)
+    root.rowconfigure(1, weight=1)
+    root.rowconfigure(2, weight=1)
+    root.rowconfigure(3, weight=1)
 
     filename = filedialog.askopenfile(parent=root, mode='r', title='Choose a file').name
 
-    lbl1 = Label(root, text=filename)
-    lbl1.pack(side = 'top')
+    lbl1 = Label(root, text=filename, font=("Arial", 15))
+    lbl1.grid(column=2, row=0)
    
 
     if filename != None:
-        btn2 = Button(root, text = 'Comincia analisi', command = lambda:main(filename))
-        btn2.pack(side = 'bottom')
+        btn2 = Button(root, text = 'Comincia analisi', command = lambda:main(filename), width=30, height=10)
+        btn2.grid(column=2, row=2)
 
 
     root.mainloop()
